@@ -1,0 +1,96 @@
+---
+import { Image } from "astro:assets";
+import logoPlaceholder from "../../public/logo-placeholder-image-6-1024x1024.png";
+
+import { navItems } from "../../utils/nav.items";
+---
+
+<header class="grid max-w-7xl mx-auto">
+  <div class="flex items-center justify-around">
+    <Image src={logoPlaceholder} alt="image" width={100} height={100} />
+
+    <nav class="space-x-6 hidden md:block">
+      {
+        navItems.map((item) => (
+          <a href={item.link} class="text-white font-bold"> {item.label} </a>
+        ))
+      }
+    </nav>
+
+    <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+      <i id="burger-icon" class="fas fa-bars" />
+      <i id="close-icon" class="fas fa-times hidden" />
+    </button>
+  </div>
+
+  <!-- nav responsive -->
+  <nav id="mobile-menu" class="gap-5 text-center md:hidden hidden bg-[#13151a]">
+    {
+      navItems.map((item) => (
+        <a href={item.link} class="text-white font-bold"> {item.label} </a>
+      ))
+    }
+  </nav>
+</header>
+
+<style>
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-10%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-10%);
+      opacity: 0;
+    }
+  }
+
+  .animate-slide-in {
+    animation: slideDown 0.5s ease-out forwards;
+  }
+
+  .animate-slide-out {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+</style>
+
+<script>
+  const menuToggle = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const burgerIcon = document.getElementById("burger-icon");
+  const closeIcon = document.getElementById("close-icon");
+
+  menuToggle.addEventListener('click', () => {
+
+    if (mobileMenu.classList.contains("hidden")) {
+
+      mobileMenu.classList.remove("hidden");
+      mobileMenu.classList.remove("animate-slide-out");
+      mobileMenu.classList.add("grid", "animate-slide-in");
+
+    } else {
+
+      mobileMenu.classList.remove("animate-slide-in");
+      mobileMenu.classList.add("animate-slide-out");
+
+      setTimeout(() => {
+        mobileMenu.classList.add("hidden");
+        mobileMenu.classList.remove("grid");
+      }, 500);
+    }
+
+    burgerIcon.classList.toggle("hidden");
+    closeIcon.classList.toggle("hidden");
+  });
+</script>
